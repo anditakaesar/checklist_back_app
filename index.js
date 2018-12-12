@@ -1,4 +1,4 @@
 const app = require('./app');
-const port = process.env.HEROKU_APP_PORT || 3000;
+const port = 8080;
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
