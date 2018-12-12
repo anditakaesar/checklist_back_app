@@ -1,6 +1,9 @@
 {
   "name": "checklist_back",
   "version": "0.0.1",
+  "engines": {
+    "node": "8.11.3"
+  },
   "description": "backend using expressjs checklist application",
   "main": "index.js",
   "scripts": {
