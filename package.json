@@ -1,0 +1,22 @@
+{
+  "name": "checklist_back",
+  "version": "0.0.1",
+  "description": "backend using expressjs checklist application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [
+    "backend",
+    "express",
+    "node"
+  ],
+  "author": "anditakaesar",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.4"
+  }
+}
