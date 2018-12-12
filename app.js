@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+
 // middleware
 // mongoose
 // var mongodbconn = process.env.DB_CONN || 'mongodb://localhost/CheckListApp';
@@ -30,6 +31,18 @@ var CheckList = null;
 // bodyParser
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+
+// compression
+var compression = require('compression');
+app.use(compression());
+
+// helmet
+var helmet = require('helmet');
+app.use(helmet());
+
+// static files
+var path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', 
     (req, res) => {
