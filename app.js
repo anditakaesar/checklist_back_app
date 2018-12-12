@@ -3,27 +3,29 @@ const app = express();
 
 // middleware
 // mongoose
-var mongodbconn = process.env.DB_CONN || 'mongodb://localhost/CheckListApp';
-var mongoose = require('mongoose');
-mongoose.connect(mongodbconn, 
-    { useNewUrlParser: true},
-    err => {
-        if (err) {
-            console.log('couldn\'t connect to database');
-        }
-        else console.log('database connected!');
-    }
-);
+// var mongodbconn = process.env.DB_CONN || 'mongodb://localhost/CheckListApp';
 
-var Schema = mongoose.Schema;
+// var mongoose = require('mongoose');
+// mongoose.connect(mongodbconn, 
+//     { useNewUrlParser: true},
+//     err => {
+//         if (err) {
+//             console.log('couldn\'t connect to database');
+//         }
+//         else console.log('database connected!');
+//     }
+// );
 
-var listSchema = new Schema({
-    description: String,
-    date: { type: Date, default: Date.now },
-    checked: { type: Boolean, default: false }
-});
+// var Schema = mongoose.Schema;
 
-var CheckList = mongoose.model('CheckList', listSchema);
+// var listSchema = new Schema({
+//     description: String,
+//     date: { type: Date, default: Date.now },
+//     checked: { type: Boolean, default: false }
+// });
+
+// var CheckList = mongoose.model('CheckList', listSchema);
+var CheckList = null;
 
 // bodyParser
 var bodyParser = require('body-parser');
