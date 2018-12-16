@@ -3,30 +3,34 @@ const app = express();
 
 
 // middleware
+var mongodbHeroku = null;
+if (process.env.MONGODB_USER) {
+    mongodbHeroku = 'mongodb://' + process.env.MONGODB_USER + ':'
+        + process.env.MONGODB_PASS + '@' + process.env.MONGODB_LOCATION;
+}
 // mongoose
-// var mongodbconn = process.env.DB_CONN || 'mongodb://localhost/CheckListApp';
+var mongodbconn = mongodbHeroku || 'mongodb://localhost/CheckListApp';
 
-// var mongoose = require('mongoose');
-// mongoose.connect(mongodbconn, 
-//     { useNewUrlParser: true},
-//     err => {
-//         if (err) {
-//             console.log('couldn\'t connect to database');
-//         }
-//         else console.log('database connected!');
-//     }
-// );
+var mongoose = require('mongoose');
+mongoose.connect(mongodbconn, 
+    { useNewUrlParser: true},
+    err => {
+        if (err) {
+            console.log('couldn\'t connect to database');
+        }
+        else console.log('database connected!');
+    }
+);
 
-// var Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-// var listSchema = new Schema({
-//     description: String,
-//     date: { type: Date, default: Date.now },
-//     checked: { type: Boolean, default: false }
-// });
+var listSchema = new Schema({
+    description: String,
+    date: { type: Date, default: Date.now },
+    checked: { type: Boolean, default: false }
+});
 
-// var CheckList = mongoose.model('CheckList', listSchema);
-var CheckList = null;
+var CheckList = mongoose.model('CheckList', listSchema);
 
 // bodyParser
 var bodyParser = require('body-parser');
