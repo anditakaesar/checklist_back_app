@@ -4,9 +4,8 @@ const app = express();
 
 // middleware
 var mongodbHeroku = null;
-if (process.env.MONGODB_URI) {
-    mongodbHeroku = process.env.MONGODB_URI;
-    console.log(mongodbHeroku);
+if (process.env.MONGOLAB_JADE_URI) {
+    mongodbHeroku = process.env.MONGOLAB_JADE_URI;
 }
 // mongoose
 var mongodbconn = mongodbHeroku || 'mongodb://localhost/CheckListApp';
