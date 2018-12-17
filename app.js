@@ -4,9 +4,9 @@ const app = express();
 
 // middleware
 var mongodbHeroku = null;
-if (process.env.MONGODB_USER) {
-    mongodbHeroku = 'mongodb://' + process.env.MONGODB_USER + ':'
-        + process.env.MONGODB_PASS + '@' + process.env.MONGODB_LOCATION;
+if (process.env.MONGODB_URI) {
+    mongodbHeroku = process.env.MONGODB_URI;
+    console.log(mongodbHeroku);
 }
 // mongoose
 var mongodbconn = mongodbHeroku || 'mongodb://localhost/CheckListApp';
