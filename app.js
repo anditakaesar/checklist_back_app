@@ -3,12 +3,8 @@ const app = express();
 
 
 // middleware
-var mongodbHeroku = null;
-if (process.env.MONGODB_URI) {
-    mongodbHeroku = process.env.MONGODB_URI;
-}
 // mongoose
-var mongodbconn = mongodbHeroku || 'mongodb://localhost/CheckListApp';
+var mongodbconn = process.env.MONGODB_URI || 'mongodb://localhost/CheckListApp';
 
 var mongoose = require('mongoose');
 mongoose.connect(mongodbconn, 
