@@ -1,4 +1,4 @@
 const app = require('./app');
-const port = process.env.OPENSHIFT_NJS_PORT || 3000;
+const port = process.env.PORT || 3001;
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => {});

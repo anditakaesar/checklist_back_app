@@ -1,35 +1,51 @@
 const express = require('express');
 const app = express();
 
+
 // middleware
+var mongodbHeroku = null;
+if (process.env.MONGODB_URI) {
+    mongodbHeroku = process.env.MONGODB_URI;
+}
 // mongoose
-// var mongodbconn = process.env.DB_CONN || 'mongodb://localhost/CheckListApp';
+var mongodbconn = mongodbHeroku || 'mongodb://localhost/CheckListApp';
 
-// var mongoose = require('mongoose');
-// mongoose.connect(mongodbconn, 
-//     { useNewUrlParser: true},
-//     err => {
-//         if (err) {
-//             console.log('couldn\'t connect to database');
-//         }
-//         else console.log('database connected!');
-//     }
-// );
+var mongoose = require('mongoose');
+mongoose.connect(mongodbconn, 
+    { useNewUrlParser: true},
+    err => {
+        if (err) {
+            console.log('couldn\'t connect to database');
+        }
+        else console.log('database connected!');
+    }
+);
 
-// var Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-// var listSchema = new Schema({
-//     description: String,
-//     date: { type: Date, default: Date.now },
-//     checked: { type: Boolean, default: false }
-// });
+var listSchema = new Schema({
+    description: String,
+    date: { type: Date, default: Date.now },
+    checked: { type: Boolean, default: false }
+});
 
-// var CheckList = mongoose.model('CheckList', listSchema);
-var CheckList = null;
+var CheckList = mongoose.model('CheckList', listSchema);
 
 // bodyParser
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+
+// compression
+var compression = require('compression');
+app.use(compression());
+
+// helmet
+var helmet = require('helmet');
+app.use(helmet());
+
+// static files
+var path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', 
     (req, res) => {
