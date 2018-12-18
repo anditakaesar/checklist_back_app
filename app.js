@@ -1,31 +1,9 @@
 const express = require('express');
 const app = express();
 
-
-// middleware
 // mongoose
-var mongodbconn = process.env.MONGODB_URI || 'mongodb://localhost/CheckListApp';
-
-var mongoose = require('mongoose');
-mongoose.connect(mongodbconn, 
-    { useNewUrlParser: true},
-    err => {
-        if (err) {
-            console.log('couldn\'t connect to database');
-        }
-        else console.log('database connected!');
-    }
-);
-
-var Schema = mongoose.Schema;
-
-var listSchema = new Schema({
-    description: String,
-    date: { type: Date, default: Date.now },
-    checked: { type: Boolean, default: false }
-});
-
-var CheckList = mongoose.model('CheckList', listSchema);
+require('./utils/dbconn');
+var CheckList = require('./models/list');
 
 // bodyParser
 var bodyParser = require('body-parser');
