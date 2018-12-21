@@ -22,7 +22,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', 
     (req, res) => {
-        return res.send('Default route');
+        return res.json({
+            success: true,
+            msg: 'Default Route, check api documentation!'
+        });
     }
 );
 
