@@ -7,6 +7,7 @@ var CheckList = require('../models/list');
 router.get('/',
     (req, res) => {        
         CheckList.find({}).sort({ date: -1 }).exec((err, checklists) => {
+            res.status(200);
             return res.json({
                 success: true,
                 checklist: checklists
@@ -20,6 +21,7 @@ router.post('/',
         let id = req.body.id;
         let desc = req.body.description;
         let chkd = req.body.checked;
+        res.status(200);
         if (!id) return res.json({
             success: false,
             msg: 'id is null'
@@ -61,6 +63,7 @@ router.post('/',
 
 router.get('/:id',
     (req, res) => {
+        res.status(200);
         CheckList.findOne({ '_id': req.params.id }, (err, checklist) => {
             if (err) return res.json({ 
                 success: false, 
@@ -83,6 +86,7 @@ router.get('/:id',
 
 router.put('/',
     (req, res) => {
+        res.status(200);
         var newList = new CheckList({ description: req.body.description });
         newList.save().then(() => {
             console.log('an item saved');
@@ -95,7 +99,10 @@ router.put('/',
 );
 
 router.delete('/',
-    (req, res) => res.send('Delete a list')
+    (req, res) => {
+        res.status(200);
+        res.send('Delete a list');
+    }
 );
 
 module.exports = router;
