@@ -45,7 +45,7 @@ userSchema.statics.authenticate = function (email, password, callback) {
             if (err) {
                 return callback(err);
             } else if (!user) {
-                var err = new Error('User not found.');
+                err = new Error('User not found.');
                 err.status = 401;
                 return callback(err);
             }
@@ -56,7 +56,7 @@ userSchema.statics.authenticate = function (email, password, callback) {
                     return callback();
                 }
             });
-        })
+        });
 };
 
 var User = mongoose.model('User', userSchema);
