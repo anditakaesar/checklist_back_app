@@ -31,5 +31,6 @@ app.get('/',
 
 // routes '/list'
 app.use('/list', require('./routes/list'));
+app.use('/login', require('./routes/login'));
 
 module.exports = app;
