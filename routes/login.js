@@ -7,7 +7,6 @@ var User = require('../models/user');
 // PUT: create new user
 // DELETE/$id: delete some userid
 
-
 router.post('/create',
     (req, res) => {
         if (req.body.email && req.body.username && req.body.password && req.body.passwordConf) {
@@ -16,17 +15,23 @@ router.post('/create',
                 username: req.body.username,
                 password: req.body.password,
                 passwordConf: req.body.passwordConf
-            }
+            };
 
             User.create(newUser, (err, user) => {
                 if (err) {
                     console.log(err);
+                    return res.status(400).json({
+                        success: false,
+                        err: err
+                    });
                 } else {
-                    return res.json({ success: true });
+                    return res.status(200).json({ 
+                        success: true, user: user 
+                    });
                 }
             });
         } else {
-            return res.json({ success: false, msg: 'error format body' });
+            return res.status(400).json({ success: false, msg: 'error format body' });
         }
     }
 );
