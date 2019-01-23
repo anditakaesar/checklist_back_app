@@ -1,4 +1,8 @@
 const express = require('express');
+
+// passport
+require('./utils/passport');
+
 const app = express();
 
 // mongoose
@@ -31,6 +35,9 @@ app.get('/',
 
 // routes '/list'
 app.use('/list', require('./routes/list'));
+
+// test require auth router
+// app.use('/list', require('passport').authenticate('jwt', {session: false}), require('./routes/list'));
 app.use('/login', require('./routes/login'));
 
 module.exports = app;
