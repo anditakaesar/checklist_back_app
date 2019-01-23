@@ -1,6 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/user');
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const STATICVARS = require('../utils/staticvars');
 
 // POST: try to login
 // GET: get user detail, id from cookies
@@ -35,5 +38,32 @@ router.post('/create',
         }
     }
 );
+
+/* POST login. */
+router.post('/auth', function (req, res, next) {
+
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        console.log(err);
+        if (err || !user) {
+            console.log(err);
+            return res.status(400).json({
+                message: info ? info.message : 'Login failed',
+                user   : user
+            });
+        }
+
+        req.login(user, {session: false}, (err) => {
+            if (err) {
+                res.send(err);
+            }
+
+            // careful in here, sign must be plain object
+            const token = jwt.sign(user.toJSON(), STATICVARS.JWT_SECRET);
+
+            return res.json({user, token});
+        });
+    })(req, res);
+
+});
 
 module.exports = router;
