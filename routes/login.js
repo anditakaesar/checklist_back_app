@@ -11,6 +11,21 @@ function isLoggedIn (req, res, next) {
     return res.json({ message: 'User not logged in' });
 }
 
+function genToken (payload) {
+    var token = jwt.sign(payload, STATICVARS.JWT_SECRET, { expiresIn: 24 * 3600 });
+    return token;
+}
+
+function genPayload(user) {
+    var userPayload = {
+        id: user._id,
+        username: user.username,
+        email: user.email
+    }
+    return userPayload;
+}
+
+// initialize passport
 router.use(passport.initialize());
 router.use(passport.session());
 
@@ -27,7 +42,13 @@ router.post('/signup', function (req, res, next) {
                 console.error(err);
                 return next(err);
             }
-            return res.json({ message: 'User Signup and logged in' });
+            var userPayload = genPayload(user);
+            
+            return res.json({ 
+                message: 'User Signup and logged in', 
+                user: userPayload,
+                token: genToken(userPayload) 
+            });
         });
     })(req, res, next);
 });
@@ -46,7 +67,13 @@ router.post('/login', function (req, res, next) {
                 console.error(err);
                 return next(err);
             }
-            return res.json({ message: 'Login Successful' });
+            var userPayload = genPayload(user);
+            
+            return res.json({ 
+                message: 'User Signup and logged in', 
+                user: userPayload,
+                token: genToken(userPayload) 
+            });
         });
     })(req, res, next);
 });
