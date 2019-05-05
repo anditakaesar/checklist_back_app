@@ -2,6 +2,15 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
 const utilities = require('../utils/utilities');
+const STATICVARS = require('./staticvars');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+
+var jwtparams = {
+    jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+    secretOrKey: STATICVARS.JWT_SECRET
+}
+
 
 // Configuration Serialize user
 passport.serializeUser(function (user, next) {
@@ -78,6 +87,19 @@ passport.use('local-login', new LocalStrategy({
             }
             return next(null, user);
         });
+    }
+));
+// jwt
+passport.use('jwt-login', new JwtStrategy(
+    jwtparams,
+    function (jwtPayload, next) {
+        var user = {
+            id: jwtPayload.id,
+            username: jwtPayload.username,
+            email: jwtPayload.email
+        };
+        
+        return next(null, user);
     }
 ));
 
