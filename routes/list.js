@@ -1,8 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var CheckList = require('../models/list');
-
-// a router for /list
+const express = require('express');
+const router = express.Router();
+const CheckList = require('../models/list');
 
 router.get('/',
     (req, res) => {        
