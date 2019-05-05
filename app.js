@@ -4,12 +4,17 @@ const session = require('express-session');
 var compression = require('compression');
 var helmet = require('helmet');
 var path = require('path');
+const passport = require('./utils/passport');
 
 // create app instance
 const app = express();
 
 // mongoose
 require('./utils/dbconn');
+
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,7 +39,7 @@ app.get('/',
     }
 );
 
-app.use('/list', require('./routes/list'));
+app.use('/list', passport.authenticate('jwt-login'), require('./routes/list'));
 app.use('/users', require('./routes/login'));
 
 module.exports = app;
