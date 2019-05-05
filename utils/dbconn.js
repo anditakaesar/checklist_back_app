@@ -1,10 +1,10 @@
 // database connection
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const STATICVARS = require('./staticvars');
 
 mongoose.Promise = global.Promise;
-var mongodbconn = process.env.MONGODB_URI || 'mongodb://localhost/CheckListApp';
 
-const connection = mongoose.connect(mongodbconn, 
+const connection = mongoose.connect(STATICVARS.MONGODB_URI, 
     { useNewUrlParser: true, useCreateIndex: true },
     err => {
         if (err) {

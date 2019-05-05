@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-var compression = require('compression');
-var helmet = require('helmet');
-var path = require('path');
+const compression = require('compression');
+const helmet = require('helmet');
+const path = require('path');
 const passport = require('./utils/passport');
+const STATICVARS = require('./utils/staticvars');
 
 // create app instance
 const app = express();
@@ -23,7 +24,7 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     name: 'expressTest.sess',
-    secret: 'A_TEST_SECRET',
+    secret: STATICVARS.COOKIES_SECRET,
     saveUninitialized: false,
     resave: false,
     cookie: { maxAge: 1000 * 60 * 15 }
