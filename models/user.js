@@ -20,43 +20,19 @@ var userSchema = new Schema({
         type: String,
         required: true,
     },
-    passwordConf: {
-        type: String,
-        required: true,
+    created_on: {
+        type: Date,
+        default: Date.now
     }
 });
 
-userSchema.pre('save', function (next) {
-    var user = this;
-    bcryptjs.hash(user.password, 10, (err, hash) => {
-        if(err) {
-            console.log(err);
-        }
-        else {
-            user.password = hash;
-        }
-        next();
-    });
-});
+// schema methods
+userSchema.methods.generateHash = function (password) {
+    return bcryptjs.hashSync(password, bcryptjs.genSaltSync(8), null);
+};
 
-userSchema.statics.authenticate = function (email, password, callback) {
-    User.findOne({ email: email })
-        .exec(function (err, user) {
-            if (err) {
-                return callback(err);
-            } else if (!user) {
-                err = new Error('User not found.');
-                err.status = 401;
-                return callback(err);
-            }
-            bcryptjs.compare(password, user.password, function (err, result) {
-                if (result === true) {
-                    return callback(null, user);
-                } else {
-                    return callback();
-                }
-            });
-        });
+userSchema.methods.validPassword = function (password) {
+    return bcryptjs.compareSync(password, this.password);
 };
 
 var User = mongoose.model('User', userSchema);
