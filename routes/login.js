@@ -88,4 +88,18 @@ router.get('/info', isLoggedIn, function (req, res, next) {
     res.json({ message: 'user info' });
 });
 
+router.post('/jwtinfo', function (req, res, next) {
+        passport.authenticate('jwt-login', function (err, user, info) {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.json({ message: 'JWT Login error', errMsg: info.errMsg });
+            }
+
+            return res.json({ message: 'JWT Login success', user: user })
+        })(req, res, next);
+    }
+);
+
 module.exports = router;
