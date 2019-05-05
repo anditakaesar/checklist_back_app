@@ -1,8 +1,5 @@
 const express = require('express');
 
-// passport
-require('./utils/passport');
-
 const app = express();
 
 // mongoose
