@@ -1,47 +1,64 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
-const passport = require('passport');
+const passport = require('../utils/passport');
 const jwt = require('jsonwebtoken');
 const STATICVARS = require('../utils/staticvars');
 
-// POST: try to login
-// GET: get user detail, id from cookies
-// PUT: create new user
-// DELETE/$id: delete some userid
-
-router.post('/create',
-    (req, res) => {
-        if (req.body.email && req.body.username && req.body.password && req.body.passwordConf) {
-            var newUser = {
-                email: req.body.email,
-                username: req.body.username,
-                password: req.body.password,
-                passwordConf: req.body.passwordConf
-            };
-
-            User.create(newUser, (err, user) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(400).json({
-                        success: false,
-                        err: err
-                    });
-                } else {
-                    return res.status(200).json({ 
-                        success: true, user: user 
-                    });
-                }
-            });
-        } else {
-            return res.status(400).json({ success: false, msg: 'error format body' });
-        }
+function isLoggedIn (req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
     }
-);
+    return res.json({ message: 'User not logged in' });
+}
+
+router.use(passport.initialize());
+router.use(passport.session());
+
+router.post('/signup', function (req, res, next) {
+    passport.authenticate('local-signup', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.json({ errMsg: info.errMsg });
+        }
+        req.login(user, function (err) {
+            if (err) {
+                console.error(err);
+                return next(err);
+            }
+            return res.json({ message: 'User Signup and logged in' });
+        });
+    })(req, res, next);
+});
 
 /* POST login. */
-router.post('/auth', function (req, res, next) {
-    
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local-login', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.json({ message: 'Login Error', errMsg: info.errMsg });
+        }
+        req.login(user, function (err) {
+            if (err) {
+                console.error(err);
+                return next(err);
+            }
+            return res.json({ message: 'Login Successful' });
+        });
+    })(req, res, next);
+});
+
+router.get('/logout', function (req, res) {
+    req.logout();
+    req.session.destroy();
+    return res.json({ message: 'user logged out' });
+});
+
+router.get('/info', isLoggedIn, function (req, res, next) {
+    res.json({ message: 'user info' });
 });
 
 module.exports = router;

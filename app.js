@@ -1,26 +1,30 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+var compression = require('compression');
+var helmet = require('helmet');
+var path = require('path');
 
+// create app instance
 const app = express();
 
 // mongoose
 require('./utils/dbconn');
 
-// bodyParser
-var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-
-// compression
-var compression = require('compression');
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compression());
-
-// helmet
-var helmet = require('helmet');
 app.use(helmet());
-
-// static files
-var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    name: 'expressTest.sess',
+    secret: 'A_TEST_SECRET',
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 1000 * 60 * 15 }
+}));
 
+// routes
 app.get('/', 
     (req, res) => {
         return res.status(200).json({
@@ -30,11 +34,7 @@ app.get('/',
     }
 );
 
-// routes '/list'
 app.use('/list', require('./routes/list'));
-
-// test require auth router
-// app.use('/list', require('passport').authenticate('jwt', {session: false}), require('./routes/list'));
-app.use('/login', require('./routes/login'));
+app.use('/users', require('./routes/login'));
 
 module.exports = app;
