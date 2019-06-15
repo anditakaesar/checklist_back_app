@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const path = require('path');
 const passport = require('./utils/passport');
 const STATICVARS = require('./utils/staticvars');
+const cors = require('cors');
 
 // create app instance
 const app = express();
@@ -29,6 +30,7 @@ app.use(session({
     resave: false,
     cookie: { maxAge: 1000 * 60 * 15 }
 }));
+app.use(cors());
 
 // routes
 app.get('/', 
