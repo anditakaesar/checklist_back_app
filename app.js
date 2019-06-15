@@ -40,7 +40,7 @@ app.get('/',
     }
 );
 
-app.use('/list', passport.authenticate('jwt-login'), require('./routes/list'));
+app.use('/list', require('./routes/list'));
 app.use('/users', require('./routes/login'));
 
 module.exports = app;
