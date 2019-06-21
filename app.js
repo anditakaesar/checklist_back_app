@@ -44,5 +44,6 @@ app.get('/',
 
 app.use('/list', require('./routes/list'));
 app.use('/users', require('./routes/login'));
+app.use('/store', passport.authenticate('jwt-login'), require('./routes/store'));
 
 module.exports = app;
