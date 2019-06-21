@@ -12,7 +12,7 @@ function isLoggedIn (req, res, next) {
 }
 
 function genToken (payload) {
-    var token = jwt.sign(payload, STATICVARS.JWT_SECRET, { expiresIn: 24 * 3600 });
+    var token = jwt.sign(payload, STATICVARS.JWT_SECRET, { expiresIn: STATICVARS.JWT_EXPSEC });
     return token;
 }
 
