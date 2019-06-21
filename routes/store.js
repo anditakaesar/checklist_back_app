@@ -2,8 +2,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/', (req, res, next) {
-    res.status(200).json({
+router.get('/', (req, res, next) => {
+    return res.status(200).json({
         message: 'all store will be showed here';
     });
 });
