@@ -24,11 +24,11 @@ app.use(compression());
 app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    name: 'expressTest.sess',
+    name: STATICVARS.COOKIES_HEADERNAME,
     secret: STATICVARS.COOKIES_SECRET,
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 1000 * 60 * 15 }
+    cookie: { maxAge: STATICVARS.COOKIES_MAXAGESEC }
 }));
 app.use(cors());
 
