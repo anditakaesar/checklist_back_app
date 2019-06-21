@@ -4,9 +4,16 @@ const Store = require('../models/store');
 
 router.get('/',
     (req, res) => {
-        return res.status(200).json({
-            success: true,
-            message: 'should be ok'
+        Store.find({}).exec((err, stores) => {
+            if (err) {
+                return res.status(400).json({
+                    message: err
+                });
+            }
+
+            return res.status(200).json({
+                stores: stores
+            });
         });
     }
 );
